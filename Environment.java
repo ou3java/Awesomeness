@@ -1,9 +1,8 @@
-import javax.xml.soap.Node;
 import java.util.ArrayList;
 
 public class Environment {
 
-    private int id;
+    private int id=0;
     public int happening;
     private ArrayList<Event> regEvents = new ArrayList();
 
@@ -12,7 +11,8 @@ public class Environment {
     }
 
     public int createEventId(){
-
+        id++;
+        return id;
     }
 
     public void timeTick(){
@@ -26,5 +26,4 @@ public class Environment {
     public Node getNode(Position p){
 
     }
-
 }
