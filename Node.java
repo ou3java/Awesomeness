@@ -1,13 +1,12 @@
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 public class Node {
 
     private Position p;
     private ArrayList<Node> neighbours = new ArrayList();
     private ArrayList<Event> events = new ArrayList();
-    private Hashtable<Integer, Node> direction=new Hashtable();
-    private Hashtable<Integer, Integer> distance=new Hashtable();
+    private ArrayList<Node> direction=new ArrayList();
+    private ArrayList<Integer> distance=new ArrayList();
     private boolean visiting=false;
 
     public Node(Position p){
@@ -25,6 +24,4 @@ public class Node {
     public void setEvent(){
 
     }
-
-
 }
