@@ -1,16 +1,17 @@
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 public class Agent extends Messenger{
 
-    private ArrayList<Event> events = new ArrayList();
-    private Position lastPos;
+    private ArrayList<Boolean> events = new ArrayList();
+    private Node lastNode;
+    private Node currentNode;
     private ArrayList<Integer> distance = new ArrayList();
 
-    public Agent(Event e){
-        events.add(0,e);
-        distance.add(0,0);
-
+    public Agent(int id, Node n){
+        events.add(id,true);
+        distance.add(id,0);
+        currentNode=n;
+        maxsteps=50;
     }
 
     public void addEvent(){
