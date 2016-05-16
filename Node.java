@@ -7,8 +7,8 @@ public class Node {
     protected ArrayList<Node> neighbours = new ArrayList();
    // private ArrayList<Event> events = new ArrayList();
     private ArrayList<Node> direction=new ArrayList();
-    private ArrayList<Integer> distance=new ArrayList();
-    private boolean visiting=false;
+    protected ArrayList<Integer> distance=new ArrayList();
+    protected boolean visiting=false;
 
     public Node(Position p){
         this.p=p;
@@ -19,7 +19,9 @@ public class Node {
         return e;
     }
 
-    public void sendRequest(){
+    public Request sendRequest(int id, Node n){
+        Request r = new Request(n,id);
+        return r;
 
     }
 
