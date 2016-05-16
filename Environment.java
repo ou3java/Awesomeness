@@ -1,23 +1,16 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Environment {
 
     private int id=0;
     private int width;
     private int height;
-    public int happening;
-    private ArrayList<Event> regEvents;
+    private ArrayList<Integer> regEvents;
     protected ArrayList<Node> nodes;
-
-    private void addNeighbour(Node n, Position p){
-        int x = p.getX();
-        int y = p.getY();
-
-        if(x > -1 && x < width && y > -1 && y < height){
-            n.neighbours.add(nodes.get(y * width + x));
-            //System.out.printf("\n %d %d ", x , y);
-        }
-    }
+    private ArrayList<Agent> agents;
+    private ArrayList<Request> requests;
+    private int happening=0;
 
     public Environment(int width, int height){
         this.width = width;
@@ -44,19 +37,35 @@ public class Environment {
         }
     }
 
-    public int createEventId(){
-        id++;
-        return id;
+    private void addNeighbour(Node n, Position p){
+        int x = p.getX();
+        int y = p.getY();
+
+        if(x > -1 && x < width && y > -1 && y < height){
+            n.neighbours.add(nodes.get(y * width + x));
+            //System.out.printf("\n %d %d ", x , y);
+        }
     }
 
     public void timeTick(){
+        boolean ifEvent;
+        Random rand=new Random();
+        for(int i=0; i<width*height; i++){
+            ifEvent = nodes.get(i).setEvent(id);
+            if(ifEvent) {
+               regEvents.add(id);
+               if(rand.nextInt(1)==1){
+                  agents.add(nodes.get(i).sendAgent(id, nodes.get(i)));
+               }
 
+            id++;
+            }
+        }
+        if(happening%400==0){
+            
+        }
     }
 
-    public void addEvent(Event e){
-        regEvents.add(id,e);
-
-    }
 
     public Node getNode(Position p){
         return nodes.get(p.getX()+50*p.getY());
