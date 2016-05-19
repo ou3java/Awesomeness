@@ -10,7 +10,7 @@ public class Environment {
     protected ArrayList<Node> nodes;
     private ArrayList<Agent> agents;
     private ArrayList<Request> requests;
-    protected ArrayList<Boolean> events;
+    //protected ArrayList<Boolean> events;
     private int timeStep =0;
 
     public Environment(int width, int height){
@@ -53,7 +53,7 @@ public class Environment {
         timeStep++;
         Random rand = new Random();
         for(int i = 0; i < nodes.size(); i++){
-            if(rand.nextInt(3)==2){
+            if(rand.nextInt(10000)==2){
                 //events.add(id, true);
                 id++;
 

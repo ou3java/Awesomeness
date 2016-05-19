@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -54,31 +53,40 @@ public class Agent extends Messenger {
 
     @Override // OFÄRDIG
     public void move() {
-
-        //Om det inte finns en nod att gå till i nodesToVisit...
-        if (nodesToVisit == null) {
-            //..välj en nod från grannlistan och stoppa in i nodesToVisit
-            //***på nått sätt måste vi få den att inte räkna med noden den kom ifrån vilket är ogjort***
-            Node u;
-            Random rand = new Random();
-            u = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
-            nodesToVisit = u;
-        }
-        //Om noden i nodesToVisit inte är upptagen...
-        if (!nodesToVisit.visiting) {
-            //ändra nod och distance i routtable och gör förflyttningen efter
-            for(int id : this.routTable.keySet()){
-                this.routTable.get(id).node = nodesToVisit;
-                this.routTable.get(id).distance++;
-            }
-            lastNode = currentNode;
-            currentNode = nodesToVisit;
-            currentNode.visiting = true;
+        if (maxsteps == 0) {
+            currentNode.visiting = false;
             maxsteps--;
-            //och uppdatera tabellerna med den nya noden
-            addEvent(currentNode);
-            getEvent(currentNode);
-        //ingen förändring sker i aktuellt timetick om den redan har en nod i nodesToVisit och den är upptagen
+            return;
+        } else if (maxsteps>=0){
+            //Om det inte finns en nod att gå till i nodesToVisit...
+            if (nodesToVisit == null) {
+                //..välj en nod från grannlistan och stoppa in i nodesToVisit
+                //***på nått sätt måste vi få den att inte räkna med noden den kom ifrån vilket är ogjort***
+
+                Random rand = new Random();
+                Node u = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
+                while (u != lastNode) {
+                    u = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
+                    nodesToVisit = u;
+                }
+            }
+            //Om noden i nodesToVisit inte är upptagen...
+            if (!nodesToVisit.visiting) {
+                //ändra nod och distance i routtable och gör förflyttningen efter
+                for (int id : this.routTable.keySet()) {
+                    this.routTable.get(id).node = currentNode;
+                    this.routTable.get(id).distance++;
+                }
+                lastNode = currentNode;
+                currentNode = nodesToVisit;
+                currentNode.visiting = true;
+                lastNode.visiting = false;
+                maxsteps--;
+                //och uppdatera tabellerna med den nya noden
+                addEvent(currentNode);
+                getEvent(currentNode);
+                //ingen förändring sker i aktuellt timetick om den redan har en nod i nodesToVisit och den är upptagen
+            }
         }
     }
 }
