@@ -10,7 +10,8 @@ public class Environment {
     protected ArrayList<Node> nodes;
     private ArrayList<Agent> agents;
     private ArrayList<Request> requests;
-    private int happening=0;
+    protected ArrayList<Boolean> events;
+    private int timeStep =0;
 
     public Environment(int width, int height){
         this.width = width;
@@ -48,31 +49,28 @@ public class Environment {
     }
 
     public void timeTick(){
-        happening++;
-        boolean ifEvent;
-        Random rand=new Random();
-        for(int i=0; i<width*height; i++){
-            ifEvent = nodes.get(i).setEvent(id);
-            if(ifEvent) {
-               //regEvents.add(id);
-               if(rand.nextInt(1)==1){
-                  agents.add(nodes.get(i).sendAgent(id, nodes.get(i)));
-               }
 
-            id++;
+        timeStep++;
+        Random rand = new Random();
+        for(int i = 0; i < nodes.size(); i++){
+            if(rand.nextInt(3)==2){
+                //events.add(id, true);
+                id++;
+
+                nodes.get(i).setEvent(id);
             }
         }
-        if(happening%400==0){
-           for(int i= 0; i<4;i++) {
-               int randomNode = rand.nextInt(width * height);
-               requests.add(nodes.get(randomNode).sendRequest(rand.nextInt(id), nodes.get(randomNode)));
-           }
-        }
+        /*if(timeStep %400==0){
+            for(int i= 0; i<4;i++) {
+                int randomNode = rand.nextInt(nodes.size());
+                requests.add(nodes.get(randomNode).sendRequest(rand.nextInt(id), nodes.get(randomNode)));
+            }
+        }*/
     }
 
 
     public Node getNode(Position p){
-        return nodes.get(p.getX()+50*p.getY());
+        return nodes.get(p.getX()+width*p.getY());
 
     }
 }

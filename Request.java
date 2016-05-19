@@ -3,11 +3,13 @@ import java.util.Stack;
 public class Request extends Messenger {
 
     private Stack<Node> wayBack = new Stack();
-    private Event event;
+    private int event;
 
-    public Request(Node n, Event e){
-        event=e;
+    public Request(Integer id, Node n){
+        event = id;
+        maxsteps=45;
         wayBack.push(n);
+        wayBack.peek().visiting = true;
     }
 
     public void checkEvent(){

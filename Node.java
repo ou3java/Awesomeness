@@ -1,13 +1,14 @@
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.HashMap;
 
 public class Node {
 
     public Position p;
     protected ArrayList<Node> neighbours = new ArrayList();
-   // private ArrayList<Event> events = new ArrayList();
-    private ArrayList<Node> direction=new ArrayList();
-    protected ArrayList<Integer> distance=new ArrayList();
+    // private ArrayList<Event> events = new ArrayList();
+    //private ArrayList<Node> direction=new ArrayList();
+    //protected ArrayList<Integer> distance=new ArrayList();
+    protected HashMap<Integer, Route> routTable = new HashMap<>();
     protected boolean visiting=false;
 
     public Node(Position p){
@@ -20,17 +21,14 @@ public class Node {
     }
 
     public Request sendRequest(int id, Node n){
-        Request r = new Request(n,id);
+        Request r = new Request(id,n);
         return r;
 
     }
 
-    public boolean setEvent(int id){
-        Random rand = new Random();
-        if(rand.nextInt(10000)==5000){
-            distance.add(id, 0);
-            return true;
-        }
-        return false;
+    public void setEvent(int id){
+
+        routTable.put(id, new Route(this, 0));
+
     }
 }
