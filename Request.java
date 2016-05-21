@@ -7,32 +7,32 @@ public class Request extends Messenger {
     private Node startNode;
     private int event;
     private boolean found= false;
-    private Node lastNode;
     private Node targetNode;
     private boolean hasReturned=false;
     private int stepsToGoal;
 
-    public Request(Integer id, Node n){
+    public Request(int id, Node n){
         event = id;
         maxsteps=45;
-        wayBack.push(n);
+        currentNode = n;
         startNode=n;
-        wayBack.peek().visiting = true;
+        currentNode.visiting = true;
 
 
     }
 
     public void checkEvent(){
-       if(wayBack.peek().routTable.get(event).distance==0){
-           found=true;
-           targetNode=wayBack.peek();
-           stepsToGoal=wayBack.size();
-
-       }
+        if(currentNode.routTable.get(event) != null){
+            if(currentNode.routTable.get(event).distance == 0){
+                found = true;
+                targetNode = currentNode;
+                stepsToGoal = wayBack.size();
+            }
+        }
     }
 
     public void dumpInfo(){
-        if(targetNode==null&&hasReturned==false){
+        if(targetNode==null && hasReturned==false){
             hasReturned=true;
             maxsteps=45;
             wayBack.push(startNode);
@@ -44,52 +44,52 @@ public class Request extends Messenger {
             System.out.println("Request startnode position: "+reqStart+"\n");
             System.out.println("Request was found in node: "+reqEnd+"\n");
             System.out.println("Steps it took: "+stepsToGoal+"\n");
-            //HÄR SKA ALLT DÖÖ
+
         }
 
     }
 
     public void move(){
-    if(wayBack.isEmpty()){
-        dumpInfo();
-        return;
-    }
-        if(found||maxsteps==0){
-            if(!wayBack.isEmpty()){
-                if(!wayBack.peek().visiting){
-                    nodesToVisit=wayBack.peek();
-                    wayBack.pop();
+
+        Boolean returning = found || maxsteps <=0;
+        if(wayBack.isEmpty() && returning){
+            dumpInfo();
+            return;
+        }
+        else if(found||maxsteps==0){
+
+                nodesToVisit=wayBack.peek();
+
+        }
+        else if (currentNode.routTable.get(event)==null){
+                //Random rand = new Random();
+            Node n = currentNode.randomNeighbour();
+            if(wayBack.isEmpty()){
+                n = currentNode.randomNeighbour();
+            }
+            else{
+                while (n == wayBack.peek() || n == null) {
+                    n = currentNode.randomNeighbour();
                 }
             }
-
-        }
-        else if (wayBack.peek().routTable.get(event).node==null){
-            if(nodesToVisit==null) {
-                Node u;
-                Random rand = new Random();
-                u = wayBack.peek().neighbours.get(rand.nextInt(wayBack.peek().neighbours.size()));
-                nodesToVisit = u;
-            }
-            if(!nodesToVisit.visiting){
-                lastNode = wayBack.peek();
-                wayBack.push(nodesToVisit);
-                wayBack.peek().visiting = true;
-                lastNode.visiting = false;
-                maxsteps--;
-                checkEvent();
-            }
-
+            nodesToVisit = n;
         }
         else {
-            nodesToVisit=wayBack.peek().routTable.get(event).node;
-            if(!nodesToVisit.visiting) {
-                lastNode = wayBack.peek();
-                wayBack.push(nodesToVisit);
-                wayBack.peek().visiting = true;
-                lastNode.visiting = false;
-                maxsteps--;
-                checkEvent();
-            }
+            nodesToVisit = currentNode.routTable.get(event).node;
         }
-     }
+        if(!nodesToVisit.visiting){
+            currentNode.visiting = false;
+            if(returning) {
+                wayBack.pop();
+            }
+            else {
+                wayBack.push(currentNode);
+            }
+            currentNode = nodesToVisit;
+            currentNode.visiting = true;
+            maxsteps--;
+            nodesToVisit = null;
+            checkEvent();
+        }
+    }
 }

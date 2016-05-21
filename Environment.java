@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class Environment {
@@ -8,9 +10,9 @@ public class Environment {
     private int height;
     //protected ArrayList<Integer> regEvents;
     protected ArrayList<Node> nodes;
-    private ArrayList<Agent> agents;
-    private ArrayList<Request> requests;
-    //protected ArrayList<Boolean> events;
+    protected LinkedList<Messenger> messengers;
+    protected ArrayList<Node> reqNodes;
+    protected ArrayList<Boolean> events;
     private int timeStep =0;
 
     public Environment(int width, int height){
@@ -36,6 +38,15 @@ public class Environment {
             addNeighbour(n, n.p.getPosToNorthWest());
 
         }
+        events = new ArrayList<>();
+        messengers = new LinkedList<>();
+        reqNodes = new ArrayList<>();
+
+        Random rand = new Random();
+        reqNodes.add(nodes.get(rand.nextInt(nodes.size())));
+        reqNodes.add(nodes.get(rand.nextInt(nodes.size())));
+        reqNodes.add(nodes.get(rand.nextInt(nodes.size())));
+        reqNodes.add(nodes.get(rand.nextInt(nodes.size())));
     }
 
     private void addNeighbour(Node n, Position p){
@@ -44,7 +55,6 @@ public class Environment {
 
         if(x > -1 && x < width && y > -1 && y < height){
             n.neighbours.add(nodes.get(y * width + x));
-            //System.out.printf("\n %d %d ", x , y);
         }
     }
 
@@ -54,18 +64,24 @@ public class Environment {
         Random rand = new Random();
         for(int i = 0; i < nodes.size(); i++){
             if(rand.nextInt(10000)==2){
-                //events.add(id, true);
+                events.add(true);
+                nodes.get(i).setEvent(id, this);
                 id++;
-
-                nodes.get(i).setEvent(id);
             }
         }
-        /*if(timeStep %400==0){
-            for(int i= 0; i<4;i++) {
-                int randomNode = rand.nextInt(nodes.size());
-                requests.add(nodes.get(randomNode).sendRequest(rand.nextInt(id), nodes.get(randomNode)));
+        if(timeStep %400==0){
+            for(Node n : reqNodes) {
+                //messengers.add(n.sendRequest(rand.nextInt(events.size()), n));
+                messengers.add(n.sendRequest(rand.nextInt(events.size()), n));
             }
-        }*/
+        }
+        for(Iterator<Messenger> iterator = messengers.iterator(); iterator.hasNext();){
+            Messenger m = iterator.next();
+            m.move();
+            if(m.maxsteps <= 0){
+                iterator.remove();
+            }
+        }
     }
 
 

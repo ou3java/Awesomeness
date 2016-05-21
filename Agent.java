@@ -6,7 +6,6 @@ public class Agent extends Messenger {
     //private ArrayList<Node> events = new ArrayList();
     protected HashMap<Integer, Route> routTable = new HashMap<>();
     private Node lastNode;
-    private Node currentNode;
     //private ArrayList<Integer> distance = new ArrayList();
 
     public Agent(int id, Node n) {
@@ -19,16 +18,16 @@ public class Agent extends Messenger {
 
     public void addEvent(Node n) {
 
-        //för varje nyckel i agents routtable...
+        //för varje nyckel i messengers routtable...
         for(int id : this.routTable.keySet()){
             //...som inte finns i nodens routtable...
             if(!n.routTable.containsKey(id)){
-                //..stoppa in i nodens routtable. (här måste man göra en ny rout av nån anledning
+                //...stoppa in i nodens routtable.
                 n.routTable.put(id, new Route(this.routTable.get(id)));
             }
             //..som finns i nodens routtable men har högre distance...
             else if(this.routTable.get(id).distance < n.routTable.get(id).distance){
-                //...ersätt nodens rout med agents
+                //...ersätt nodens rout med messengers.
                 n.routTable.put(id, new Route(this.routTable.get(id)));
             }
         }
@@ -53,22 +52,19 @@ public class Agent extends Messenger {
 
     @Override // OFÄRDIG
     public void move() {
-        if (maxsteps == 0) {
-            currentNode.visiting = false;
-            maxsteps--;
-            return;
-        } else if (maxsteps>=0){
+
+        if (maxsteps > 0) {
             //Om det inte finns en nod att gå till i nodesToVisit...
             if (nodesToVisit == null) {
                 //..välj en nod från grannlistan och stoppa in i nodesToVisit
                 //***på nått sätt måste vi få den att inte räkna med noden den kom ifrån vilket är ogjort***
 
                 Random rand = new Random();
-                Node u = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
-                while (u != lastNode) {
-                    u = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
-                    nodesToVisit = u;
+                Node n = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
+                while (n == lastNode || n == null) {
+                    n = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
                 }
+                nodesToVisit = n;
             }
             //Om noden i nodesToVisit inte är upptagen...
             if (!nodesToVisit.visiting) {
@@ -82,6 +78,7 @@ public class Agent extends Messenger {
                 currentNode.visiting = true;
                 lastNode.visiting = false;
                 maxsteps--;
+                nodesToVisit = null;
                 //och uppdatera tabellerna med den nya noden
                 addEvent(currentNode);
                 getEvent(currentNode);
