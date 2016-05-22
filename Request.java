@@ -40,13 +40,13 @@ public class Request extends Messenger {
         else{
             String reqStart= ""+startNode.p.getX()+" "+startNode.p.getY();
             String reqEnd = ""+targetNode.p.getX()+" "+targetNode.p.getY();
-            System.out.println("Event request found!\n");
-            System.out.println("Request startnode position: "+reqStart+"\n");
-            System.out.println("Request was found in node: "+reqEnd+"\n");
+            System.out.println("Event "+event+" found!");
+            System.out.println("Request startnode position: "+reqStart+"");
+            System.out.println("Event was found in node: "+reqEnd+"");
             System.out.println("Steps it took: "+stepsToGoal+"\n");
 
-        }
 
+        }
     }
 
     public void move(){
@@ -54,6 +54,7 @@ public class Request extends Messenger {
         Boolean returning = found || maxsteps <=0;
         if(wayBack.isEmpty() && returning){
             dumpInfo();
+            maxsteps= 0;
             return;
         }
         else if(found||maxsteps==0){
