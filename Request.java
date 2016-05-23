@@ -1,5 +1,9 @@
-
 import java.util.Stack;
+
+/**
+ * Requestclass extends messenger class. It moves around and searches nodes
+ * for information about a specific event
+ */
 
 public class Request extends Messenger {
 
@@ -11,6 +15,11 @@ public class Request extends Messenger {
     private boolean hasReturned=false;
     private int stepsToGoal;
 
+    /**
+     * Constructor for Request.
+     * @param id The event-id to search for
+     * @param n
+     */
     public Request(int id, Node n){
         event = id;
         maxsteps=45;

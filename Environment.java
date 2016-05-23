@@ -4,7 +4,8 @@ import java.util.LinkedList;
 import java.util.Random;
 
 /**
- * A class that simulates
+ * A class that simulates an environment of nodes in a grid. The nodes can
+ * detect its neighbours in 8 directions.
  */
 public class Environment {
 
@@ -17,11 +18,16 @@ public class Environment {
     protected ArrayList<Node> reqNodes;
     protected ArrayList<Boolean> events;
 
+    /**
+     * Constructor for Environment. the nodes will be placed in a grid and
+     * the total number of nodes is width * height
+     * @param width the number of columns
+     * @param height the number of rows
+     */
     public Environment(int width, int height){
         this.width = width;
         this.height = height;
         int k=0;
-        //regEvents=new ArrayList();
         nodes = new ArrayList();
         for(int y=0; y<height; y++) {
             for(int x=0; x<width; x++) {
@@ -29,6 +35,7 @@ public class Environment {
                 k++;
             }
         }
+        //add all neighbours for each node
         for(Node n : nodes){
             addNeighbour(n, n.p.getPosToEast());
             addNeighbour(n, n.p.getPosToWest());
@@ -51,6 +58,11 @@ public class Environment {
         reqNodes.add(nodes.get(rand.nextInt(nodes.size())));
     }
 
+    /**
+     * Helpmethod for the constructor. used to fill each nodes neighbourlist
+     * @param n The node to fill
+     * @param p the nodes position
+     */
     private void addNeighbour(Node n, Position p){
         int x = p.getX();
         int y = p.getY();
@@ -60,9 +72,14 @@ public class Environment {
         }
     }
 
+    /**
+     * This method calls all methods that is to be done in each
+     * timestepsimultaion
+     */
     public void timeTick(){
 
         timeStep++;
+        //add an event in each node with a 0,01% probability
         Random rand = new Random();
         for(int i = 0; i < nodes.size(); i++){
             if(rand.nextInt(10000)==2){
@@ -71,12 +88,13 @@ public class Environment {
                 id++;
             }
         }
+        //each 400th timestep a request is sent from the 4 preset nodes
         if(timeStep %400==0){
             for(Node n : reqNodes) {
-                //messengers.add(n.sendRequest(rand.nextInt(events.size()), n));
                 messengers.add(n.sendRequest(rand.nextInt(events.size()), n));
             }
         }
+        //each messenger makes a move and is removed after its done
         for(Iterator<Messenger> iterator = messengers.iterator(); iterator.hasNext();){
             Messenger m = iterator.next();
             m.move();
@@ -84,11 +102,5 @@ public class Environment {
                 iterator.remove();
             }
         }
-    }
-
-
-    public Node getNode(Position p){
-        return nodes.get(p.getX()+width*p.getY());
-
     }
 }

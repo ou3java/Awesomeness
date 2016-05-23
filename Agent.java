@@ -1,11 +1,22 @@
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * Agent class extends the messenger class. It travels among the nodes
+ * and spreads information among them about events it encounters
+ */
+
 public class Agent extends Messenger {
 
     protected HashMap<Integer, Route> routTable = new HashMap<>();
     private Node lastNode;
 
+    /**
+     * Constructor for the agent
+     * @param id The event that created the agent
+     * @param n The node that created the agent
+     * @param time the timestep the event was created in
+     */
     public Agent(int id, Node n, int time) {
 
         routTable.put(id, new Route(n, 0, time));
@@ -14,73 +25,84 @@ public class Agent extends Messenger {
         currentNode.visiting = true;
     }
 
+    /**
+     * This method adds all the events the agent is aware of to a node
+     * @param n the node to add the events to
+     */
     public void addEvent(Node n) {
 
-        //för varje nyckel i messengers routtable...
+        //For each key in agents routtable...
         for(int id : this.routTable.keySet()){
-            //...som inte finns i nodens routtable...
+            //...that is not present in the nodes routtable...
             if(!n.routTable.containsKey(id)){
-                //...stoppa in i nodens routtable.
+                //...add to the nodes routtable.
                 n.routTable.put(id, new Route(this.routTable.get(id)));
             }
-            //..som finns i nodens routtable men har högre distance...
+            //...that is present in the nodes routtable but has lower distance
             else if(this.routTable.get(id).distance < n.routTable.get(id).distance){
-                //...ersätt nodens rout med messengers.
+                //...replace the nodes route with agents route.
                 n.routTable.put(id, new Route(this.routTable.get(id)));
             }
         }
     }
 
+    /**
+     * This method gets all the events a node is aware of
+     * @param n the node to get events from
+     */
     public void getEvent(Node n) {
-        //för varje nyckel i nodens routtable...
+        //For each key in the nodes routtable...
         for(int id : n.routTable.keySet()){
-            //...som inte finns i agentens routtable...
+            //...that is not present in agents routtable...
             if(!this.routTable.containsKey(id)){
-                //stoppa in i agentens routtable
+                //...add to agents routtable.
                 this.routTable.put(id, new Route(n.routTable.get(id)));
             }
-            //...som finns i agentens routtable men har högre distance...
+            //...that is present in agents routtable but has lower distance
             else if(n.routTable.get(id).distance < this.routTable.get(id).distance){
-                //...ersätt agentens rout med nodens
+                //...replace agents route with the nodes route.
                 this.routTable.put(id, new Route(n.routTable.get(id)));
             }
         }
 
     }
 
+    /**
+     * This method simulates a move agent makes from one node to another
+     */
     @Override
     public void move() {
 
         if (maxsteps > 0) {
-            //Om det inte finns en nod att gå till i nodesToVisit...
+            //If there is no node present in nodesToVisit...
             if (nodesToVisit == null) {
-                //..välj en nod från grannlistan och stoppa in i nodesToVisit
-                //***på nått sätt måste vi få den att inte räkna med noden den kom ifrån vilket är ogjort***
-
+                //Choose a random node among agents current node's neighbours...
                 Random rand = new Random();
                 Node n = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
+                //making sure nodesToVisit is not the last node.
                 while (n == lastNode || n == null) {
                     n = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
                 }
+                //...and assign it to nodesToVisit.
                 nodesToVisit = n;
             }
-            //Om noden i nodesToVisit inte är upptagen...
+            //If the node in nodesToVisit is not visided already...
             if (!nodesToVisit.visiting) {
-                //ändra nod och distance i routtable och gör förflyttningen efter
+                //Change the values in agents routtable before making the move.
                 for (int id : this.routTable.keySet()) {
                     this.routTable.get(id).node = currentNode;
                     this.routTable.get(id).distance++;
                 }
+                //Making the move by changing the agents nodevalues.
                 lastNode = currentNode;
                 currentNode = nodesToVisit;
                 currentNode.visiting = true;
                 lastNode.visiting = false;
                 maxsteps--;
                 nodesToVisit = null;
-                //och uppdatera tabellerna med den nya noden
+                //After the move is made, update the table with the new node
                 addEvent(currentNode);
                 getEvent(currentNode);
-                //ingen förändring sker i aktuellt timetick om den redan har en nod i nodesToVisit och den är upptagen
             }
         }
     }

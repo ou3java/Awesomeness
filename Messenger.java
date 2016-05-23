@@ -1,5 +1,5 @@
 /**
- * This is a parentclass for agent and request. it consists of
+ * This is a parentclass for agent and request.
  */
 public class Messenger {
 
