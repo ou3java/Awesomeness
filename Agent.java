@@ -3,10 +3,8 @@ import java.util.Random;
 
 public class Agent extends Messenger {
 
-    //private ArrayList<Node> events = new ArrayList();
     protected HashMap<Integer, Route> routTable = new HashMap<>();
     private Node lastNode;
-    //private ArrayList<Integer> distance = new ArrayList();
 
     public Agent(int id, Node n, int time) {
 
@@ -50,7 +48,7 @@ public class Agent extends Messenger {
 
     }
 
-    @Override // OFÄRDIG
+    @Override
     public void move() {
 
         if (maxsteps > 0) {

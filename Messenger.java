@@ -1,3 +1,6 @@
+/**
+ * This is a parentclass for agent and request. it consists of
+ */
 public class Messenger {
 
     protected int maxsteps;

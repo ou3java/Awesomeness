@@ -3,17 +3,19 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
+/**
+ * A class that simulates
+ */
 public class Environment {
 
     private int id=0;
     private int width;
     private int height;
-    //protected ArrayList<Integer> regEvents;
+    private int timeStep =0;
     protected ArrayList<Node> nodes;
     protected LinkedList<Messenger> messengers;
     protected ArrayList<Node> reqNodes;
     protected ArrayList<Boolean> events;
-    private int timeStep =0;
 
     public Environment(int width, int height){
         this.width = width;
