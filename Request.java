@@ -55,10 +55,10 @@ public class Request extends Messenger {
             wayBack.push(startNode);
         }
         else{
-            String reqStart= ""+startNode.p.getX()+" "+startNode.p.getY();
-            String reqEnd = ""+targetNode.p.getX()+" "+targetNode.p.getY();
+            String reqStart= "x:"+(startNode.p.getX()+1)+" y:"+(startNode.p.getY()+1);
+            String reqEnd = "x:"+(targetNode.p.getX()+1)+" y:"+(targetNode.p.getY()+1);
             System.out.println("Event "+event+" found!");
-            System.out.println("Request startnode position: "+reqStart+"");
+            System.out.println("Request made by node: "+reqStart+"");
             System.out.println("Event was found in node: "+reqEnd+"");
             System.out.println("Event timestep: "+targetNode.routTable.get(event).time+"");
             System.out.println("Steps it took: "+stepsToGoal+"\n");
