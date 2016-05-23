@@ -14,7 +14,7 @@ public class Agent extends Messenger {
     /**
      * Constructor for the agent
      * @param id The event that created the agent
-     * @param n The node that created the agent
+     * @param n The agents current node
      * @param time the timestep the event was created in
      */
     public Agent(int id, Node n, int time) {
