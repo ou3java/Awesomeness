@@ -1,4 +1,12 @@
 /**
+ * Objektorienterad programmeringsmetodik obligatorisk uppgift 3
+ * Grupp 2
+ * id15vjn
+ * ens11jye
+ * id15jnn
+ */
+
+/**
  * An applicationclass for the rumorrouting classes
  */
 public class Rumorrouting {

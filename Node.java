@@ -1,3 +1,11 @@
+/**
+ * Objektorienterad programmeringsmetodik obligatorisk uppgift 3
+ * Grupp 2
+ * id15vjn
+ * ens11jye
+ * id15jnn
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;

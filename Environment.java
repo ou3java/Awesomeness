@@ -1,3 +1,11 @@
+/**
+ * Objektorienterad programmeringsmetodik obligatorisk uppgift 3
+ * Grupp 2
+ * id15vjn
+ * ens11jye
+ * id15jnn
+ */
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -35,7 +43,7 @@ public class Environment {
                 k++;
             }
         }
-        //add all neighbours for each node
+        //add neighbours to nodes for each neighbourdirection
         for(Node n : nodes){
             addNeighbour(n, n.p.getPosToEast());
             addNeighbour(n, n.p.getPosToWest());

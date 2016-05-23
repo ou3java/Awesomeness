@@ -1,4 +1,12 @@
 /**
+ * Objektorienterad programmeringsmetodik obligatorisk uppgift 3
+ * Grupp 2
+ * id15vjn
+ * ens11jye
+ * id15jnn
+ */
+
+/**
  * This is a parentclass for agent and request.
  */
 public class Messenger {

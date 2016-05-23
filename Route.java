@@ -1,4 +1,12 @@
 /**
+ * Objektorienterad programmeringsmetodik obligatorisk uppgift 3
+ * Grupp 2
+ * id15vjn
+ * ens11jye
+ * id15jnn
+ */
+
+/**
  * Route is a class that contains a specific node, distance and time.
  * The node is the neighbour node to get to a specific event with its distance
  * and time-integers
