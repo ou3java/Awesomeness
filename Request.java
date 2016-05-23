@@ -33,7 +33,7 @@ public class Request extends Messenger {
     /**
      * A method to to check each node if the event is reached
      */
-    public void checkEvent(){
+    private void checkEvent(){
         if(currentNode.routTable.get(event) != null){
             if(currentNode.routTable.get(event).distance == 0){
                 found = true;
@@ -48,7 +48,7 @@ public class Request extends Messenger {
      * time it tries again to find its event.
      * If it has found its event it writes the information to the console
      */
-    public void dumpInfo(){
+    private void dumpInfo(){
         if(targetNode==null && hasReturned==false){
             hasReturned=true;
             maxsteps=45;
@@ -60,7 +60,7 @@ public class Request extends Messenger {
             System.out.println("Event "+event+" found!");
             System.out.println("Request made by node: "+reqStart+"");
             System.out.println("Event was found in node: "+reqEnd+"");
-            System.out.println("Event timestep: "+targetNode.routTable.get(event).time+"");
+            System.out.println("Event time: "+targetNode.routTable.get(event).time+"");
             System.out.println("Steps it took: "+stepsToGoal+"\n");
 
             maxsteps = 0;

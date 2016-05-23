@@ -31,7 +31,7 @@ public class Node {
      * @param time The events timestep
      * @return the agent to be sent
      */
-    public Agent sendAgent(int id, Node n, int time){
+    private Agent sendAgent(int id, Node n, int time){
         Agent e = new Agent(id, n, time);
         return e;
     }

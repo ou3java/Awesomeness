@@ -29,7 +29,7 @@ public class Agent extends Messenger {
      * This method adds all the events the agent is aware of to a node
      * @param n the node to add the events to
      */
-    public void addEvent(Node n) {
+    private void addEvent(Node n) {
 
         //For each key in agents routtable...
         for(int id : this.routTable.keySet()){
@@ -50,7 +50,7 @@ public class Agent extends Messenger {
      * This method gets all the events a node is aware of
      * @param n the node to get events from
      */
-    public void getEvent(Node n) {
+    private void getEvent(Node n) {
         //For each key in the nodes routtable...
         for(int id : n.routTable.keySet()){
             //...that is not present in agents routtable...
