@@ -1,3 +1,12 @@
+/**
+ * Objektorienterad programmeringsmetodik obligatorisk uppgift 3
+ * Grupp 2
+ * id15vjn
+ * ens11jye
+ * id15jnn
+ * dv15nkn
+ */
+
 public class Position {
 
     private int y;
