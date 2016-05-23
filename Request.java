@@ -18,7 +18,7 @@ public class Request extends Messenger {
     /**
      * Constructor for Request.
      * @param id The event-id to search for
-     * @param n
+     * @param n The starting node
      */
     public Request(int id, Node n){
         event = id;
@@ -30,6 +30,9 @@ public class Request extends Messenger {
 
     }
 
+    /**
+     * A method to to check each node if the event is reached
+     */
     public void checkEvent(){
         if(currentNode.routTable.get(event) != null){
             if(currentNode.routTable.get(event).distance == 0){
@@ -40,6 +43,11 @@ public class Request extends Messenger {
         }
     }
 
+    /**
+     * A method to use when Request has returned. If it returns for the first
+     * time it tries again to find its event.
+     * If it has found its event it writes the information to the console
+     */
     public void dumpInfo(){
         if(targetNode==null && hasReturned==false){
             hasReturned=true;
@@ -59,20 +67,27 @@ public class Request extends Messenger {
         }
     }
 
+    /**
+     * This method simulates a move the Request makes from one node to another.
+     */
     public void move(){
-
+        //if the request has returned after either found the event or ran out
+        //of steps...
         Boolean returning = found || maxsteps <=0;
         if(wayBack.isEmpty() && returning){
+            //Do the dumpinfomethod and ignore the rest of move
             dumpInfo();
             return;
         }
+        //Or if it has found its event or has ran out of steps...
         else if(found||maxsteps==0){
-
-                nodesToVisit=wayBack.peek();
+            //...queue the last node to nodesToVisit.
+            nodesToVisit=wayBack.peek();
 
         }
+        //Or if it has found no information about its event in its node...
         else if (currentNode.routTable.get(event)==null){
-                //Random rand = new Random();
+            //...choose a random node among its neighbours
             Node n = currentNode.randomNeighbour();
             if(wayBack.isEmpty()){
                 n = currentNode.randomNeighbour();
@@ -84,11 +99,16 @@ public class Request extends Messenger {
             }
             nodesToVisit = n;
         }
+        //Or if informaion about its event is found...
         else {
+            //...choose the correct node from the table and add to nodesToVisit.
             nodesToVisit = currentNode.routTable.get(event).node;
         }
+        //If the node in nodesToVisit is not visided already...
         if(!nodesToVisit.visiting){
+            //make the move by changing the nodevalues.
             currentNode.visiting = false;
+            //different behavior if returning.
             if(returning) {
                 wayBack.pop();
             }
@@ -99,6 +119,7 @@ public class Request extends Messenger {
             currentNode.visiting = true;
             maxsteps--;
             nodesToVisit = null;
+            //check for event at the end of each move
             checkEvent();
         }
     }

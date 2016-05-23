@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Agent extends Messenger {
 
-    protected HashMap<Integer, Route> routTable = new HashMap<>();
+    private HashMap<Integer, Route> routTable = new HashMap<>();
     private Node lastNode;
 
     /**
