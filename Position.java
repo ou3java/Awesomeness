@@ -54,22 +54,23 @@ public class Position {
         return new Position(y,x+1);
     }
 
-    /**Check if a given position is the current position
-     * @param o the given position
-     * @return true if the given position is the current position, false if not
+    /**Gets the position northeast of the current position
+     * @return the position
      */
-    public boolean equals(Position o){
-        if(this.x==o.getX()&&this.y==o.getY())
-            return true;
-        else
-            return false;
-    }
-
     public Position getPosToNorthEast() {return new Position(y-1,x+1);}
 
+    /**Gets the position northwest of the current position
+     * @return the position
+     */
     public Position getPosToNorthWest() {return new Position(y-1, x-1);}
 
+    /**Gets the position southeast of the current position
+     * @return the position
+     */
     public Position getPosToSouthEast() {return new Position(y+1,x+1);}
 
+    /**Gets the position southwest of the current position
+     * @return the position
+     */
     public Position getPosToSouthWest() {return new Position(y+1,x-1);}
 }
