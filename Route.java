@@ -6,10 +6,12 @@ public class Route {
 
     Node node;
     int distance;
+    int time;
 
-    public Route(Node n, int distance){
+    public Route(Node n, int distance, int time){
         this.node = n;
         this.distance = distance;
+        this.time = time;
     }
     //en constructor som skapar en kopia av en rout....nått med objektorientering
     //har inte klurat igenom varför man måste riktigt...ska stirra vidare på
@@ -17,5 +19,6 @@ public class Route {
     public Route(Route r){
         this.node = r.node;
         this.distance = r.distance;
+        this.time = r.time;
     }
 }

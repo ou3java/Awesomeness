@@ -17,8 +17,8 @@ public class Node {
         this.p=p;
     }
 
-    public Agent sendAgent(int id, Node n){
-        Agent e = new Agent(id, n);
+    public Agent sendAgent(int id, Node n, int time){
+        Agent e = new Agent(id, n, time);
         return e;
     }
 
@@ -28,12 +28,12 @@ public class Node {
 
     }
 
-    public void setEvent(int id, Environment e){
+    public void setEvent(int id, Environment e, int time){
 
-        routTable.put(id, new Route(this, 0));
+        routTable.put(id, new Route(this, 0, time));
         Random rand = new Random();
         if(rand.nextInt(100) < chanceToSend){
-            e.messengers.add(sendAgent(id, this));
+            e.messengers.add(sendAgent(id, this, time));
         }
     }
 

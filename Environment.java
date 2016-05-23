@@ -65,7 +65,7 @@ public class Environment {
         for(int i = 0; i < nodes.size(); i++){
             if(rand.nextInt(10000)==2){
                 events.add(true);
-                nodes.get(i).setEvent(id, this);
+                nodes.get(i).setEvent(id, this, timeStep);
                 id++;
             }
         }

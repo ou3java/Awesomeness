@@ -8,9 +8,9 @@ public class Agent extends Messenger {
     private Node lastNode;
     //private ArrayList<Integer> distance = new ArrayList();
 
-    public Agent(int id, Node n) {
+    public Agent(int id, Node n, int time) {
 
-        routTable.put(id, new Route(n, 0));
+        routTable.put(id, new Route(n, 0, time));
         currentNode = n;
         maxsteps = 50;
         currentNode.visiting = true;

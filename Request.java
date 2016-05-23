@@ -43,9 +43,10 @@ public class Request extends Messenger {
             System.out.println("Event "+event+" found!");
             System.out.println("Request startnode position: "+reqStart+"");
             System.out.println("Event was found in node: "+reqEnd+"");
+            System.out.println("Event timestep: "+targetNode.routTable.get(event).time+"");
             System.out.println("Steps it took: "+stepsToGoal+"\n");
 
-
+            maxsteps = 0;
         }
     }
 
@@ -54,7 +55,6 @@ public class Request extends Messenger {
         Boolean returning = found || maxsteps <=0;
         if(wayBack.isEmpty() && returning){
             dumpInfo();
-            maxsteps= 0;
             return;
         }
         else if(found||maxsteps==0){
