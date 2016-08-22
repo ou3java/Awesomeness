@@ -6,8 +6,7 @@
  * id15jnn
  * dv15nkn
  */
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Agent class extends the messenger class. It travels among the nodes
@@ -16,8 +15,9 @@ import java.util.Random;
 
 public class Agent extends Messenger {
 
-    private HashMap<Integer, Route> routTable = new HashMap<>();
-    private Node lastNode;
+    protected HashMap<Integer, Route> routTable = new HashMap<>();
+    private Random rand = new Random();
+    private boolean waiting = false;
 
     /**
      * Constructor for the agent
@@ -25,19 +25,20 @@ public class Agent extends Messenger {
      * @param n The agents current node
      * @param time the timestep the event was created in
      */
-    public Agent(int id, Node n, int time) {
+    public Agent(int id, Node n, int time, int maxStep) {
+
 
         routTable.put(id, new Route(n, 0, time));
         currentNode = n;
-        maxsteps = 50;
         currentNode.visiting = true;
+        this.maxsteps = maxStep;
     }
 
     /**
      * This method adds all the events the agent is aware of to a node
      * @param n the node to add the events to
      */
-    private void addEvent(Node n) {
+    protected void addEvent(Node n) {
 
         //For each key in agents routtable...
         for(int id : this.routTable.keySet()){
@@ -58,7 +59,7 @@ public class Agent extends Messenger {
      * This method gets all the events a node is aware of
      * @param n the node to get events from
      */
-    private void getEvent(Node n) {
+    protected void getEvent(Node n) {
         //For each key in the nodes routtable...
         for(int id : n.routTable.keySet()){
             //...that is not present in agents routtable...
@@ -82,35 +83,57 @@ public class Agent extends Messenger {
     public void move() {
 
         if (maxsteps > 0) {
+            Node n;
             //If there is no node present in nodesToVisit...
             if (nodesToVisit == null) {
-                //Choose a random node among agents current node's neighbours...
-                Random rand = new Random();
-                Node n = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
-                //making sure nodesToVisit is not the last node.
-                while (n == lastNode || n == null) {
-                    n = currentNode.neighbours.get(rand.nextInt(currentNode.neighbours.size()));
+                //create a temporary set of the neighbourlist
+                LinkedList<Node> temp = new LinkedList<Node>(currentNode.neighbours);
+                //exclude visited nodes from the temporary neighbourlist
+                temp.removeAll(visitedNodes);
+                //Choose a random neighbour
+                Collections.shuffle(temp, rand);
+                //if all nodes are visited choose a rendom neighbour
+                if(temp.isEmpty()){
+                    n = currentNode.randomNeighbour();
                 }
-                //...and assign it to nodesToVisit.
+                else{
+                    n = temp.getFirst();
+                }
+                //assign the chosen node to nodesToVisit.
                 nodesToVisit = n;
             }
-            //If the node in nodesToVisit is not visided already...
+            //If the node in nodesToVisit is not visited by other messages...
             if (!nodesToVisit.visiting) {
+
                 //Change the values in agents routtable before making the move.
                 for (int id : this.routTable.keySet()) {
                     this.routTable.get(id).node = currentNode;
                     this.routTable.get(id).distance++;
                 }
                 //Making the move by changing the agents nodevalues.
-                lastNode = currentNode;
+                visitedNodes.add(currentNode);
+                currentNode.visiting = false;
                 currentNode = nodesToVisit;
+                //System.out.printf("Agent % visiting node %d\n", currentNode.p.getX());
                 currentNode.visiting = true;
-                lastNode.visiting = false;
                 maxsteps--;
                 nodesToVisit = null;
                 //After the move is made, update the table with the new node
                 addEvent(currentNode);
                 getEvent(currentNode);
+                waiting = false;
+            }
+            else{
+                //if the node to visit is busy twice reset it.
+                //This prevents locks if 2 messengers wants to visit eachothers
+                //node.
+                if(waiting){
+                    waiting = false;
+                    nodesToVisit = null;
+                }
+                else{
+                    waiting = true;
+                }
             }
         }
     }
