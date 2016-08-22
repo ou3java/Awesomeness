@@ -16,7 +16,7 @@ public class Position {
      * @param y the y coordinate of the position (line)
      * @param x the x coordinate of the position (column)
      */
-    public Position(int y, int x){
+    public Position(int y, int x) {
         this.y=y;
         this.x=x;
     }
@@ -24,62 +24,70 @@ public class Position {
     /**Gets the x coordinate of the current position
      * @return the x coordinate
      */
-    public int getX(){
+    public int getX() {
         return this.x;
     }
 
     /**Gets the y coordinate of the current position
      * @return the y coordinate
      */
-    public int getY(){
+    public int getY() {
         return this.y;
     }
 
     /**Gets the position south of the current position
      * @return the position
      */
-    public Position getPosToSouth(){
+    public Position getPosToSouth() {
         return new Position(y+1,x);
     }
 
     /**Gets the position north of the current position
      * @return the position
      */
-    public Position getPosToNorth(){
+    public Position getPosToNorth() {
         return new Position(y-1,x);
     }
 
     /**Gets the position west of the current position
      * @return the position
      */
-    public Position getPosToWest(){
+    public Position getPosToWest() {
         return new Position(y,x-1);
     }
 
     /**Gets the position east of the current position
      * @return the position
      */
-    public Position getPosToEast(){
+    public Position getPosToEast() {
         return new Position(y,x+1);
     }
 
     /**Gets the position northeast of the current position
      * @return the position
      */
-    public Position getPosToNorthEast() {return new Position(y-1,x+1);}
+    public Position getPosToNorthEast() {
+        return new Position(y-1,x+1);
+    }
 
     /**Gets the position northwest of the current position
      * @return the position
      */
-    public Position getPosToNorthWest() {return new Position(y-1, x-1);}
+    public Position getPosToNorthWest() {
+        return new Position(y-1, x-1);
+    }
 
     /**Gets the position southeast of the current position
      * @return the position
      */
-    public Position getPosToSouthEast() {return new Position(y+1,x+1);}
+    public Position getPosToSouthEast() {
+        return new Position(y+1,x+1);
+    }
 
     /**Gets the position southwest of the current position
      * @return the position
      */
-    public Position getPosToSouthWest() {return new Position(y+1,x-1);}
+    public Position getPosToSouthWest() {
+        return new Position(y+1,x-1);
+    }
 }
