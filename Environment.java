@@ -22,10 +22,13 @@ public class Environment {
     private int width;
     private int height;
     private int timeStep =0;
+    private double eventChance;
     protected ArrayList<Node> nodes;
     protected LinkedList<Messenger> messengers;
     protected ArrayList<Node> reqNodes;
     protected ArrayList<Boolean> events;
+    protected int stepsAgent;
+    private int stepsReq;
 
     /**
      * Constructor for Environment. the nodes will be placed in a grid and
@@ -33,9 +36,10 @@ public class Environment {
      * @param width the number of columns
      * @param height the number of rows
      */
-    public Environment(int width, int height){
+    public Environment(int width, int height, int stepAgent, int stepReq, double eventChance){
         this.width = width;
         this.height = height;
+        this.eventChance = eventChance;
         int k=0;
         nodes = new ArrayList();
         for(int y=0; y<height; y++) {
@@ -65,6 +69,9 @@ public class Environment {
         reqNodes.add(nodes.get(rand.nextInt(nodes.size())));
         reqNodes.add(nodes.get(rand.nextInt(nodes.size())));
         reqNodes.add(nodes.get(rand.nextInt(nodes.size())));
+
+        this.stepsAgent = stepAgent;
+        this.stepsReq = stepReq;
     }
 
     /**
@@ -91,7 +98,7 @@ public class Environment {
         //add an event in each node with a 0,01% probability
         Random rand = new Random();
         for(int i = 0; i < nodes.size(); i++){
-            if(rand.nextInt(10000)==2){
+            if(rand.nextDouble() <= eventChance){
                 events.add(true);
                 nodes.get(i).setEvent(id, this, timeStep);
                 id++;
@@ -100,7 +107,7 @@ public class Environment {
         //each 400th timestep a request is sent from the 4 preset nodes
         if(timeStep %400==0){
             for(Node n : reqNodes) {
-                messengers.add(n.sendRequest(rand.nextInt(events.size()), n));
+                messengers.add(n.sendRequest(rand.nextInt(events.size()), n, stepsReq));
             }
         }
         //each messenger makes a move and is removed after its done
