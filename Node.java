@@ -23,6 +23,7 @@ public class Node {
     protected HashMap<Integer, Route> routTable = new HashMap<>();
     public boolean visiting=false;
     private int chanceToSend = 50;
+    private Random rand = new Random();
 
     /**
      * Constructor for Node.
@@ -40,8 +41,8 @@ public class Node {
      * @param time The events timestep
      * @return the agent to be sent
      */
-    private Agent sendAgent(int id, Node n, int time){
-        Agent e = new Agent(id, n, time);
+    private Agent sendAgent(int id, Node n, int time, int maxStep){
+        Agent e = new Agent(id, n, time, maxStep);
         return e;
     }
 
@@ -51,8 +52,8 @@ public class Node {
      * @param n The node to send the request
      * @return The request to be sent
      */
-    public Request sendRequest(int id, Node n){
-        Request r = new Request(id,n);
+    public Request sendRequest(int id, Node n, int maxStep){
+        Request r = new Request(id,n, maxStep);
         return r;
 
     }
@@ -66,9 +67,9 @@ public class Node {
     public void setEvent(int id, Environment e, int time){
 
         routTable.put(id, new Route(this, 0, time));
-        Random rand = new Random();
+        //Random rand = new Random();
         if(rand.nextInt(100) < chanceToSend){
-            e.messengers.add(sendAgent(id, this, time));
+            e.messengers.add(sendAgent(id, this, time, e.stepsAgent));
         }
     }
 
@@ -77,7 +78,7 @@ public class Node {
      * @return The chosen node
      */
     public Node randomNeighbour(){
-        Random rand = new Random();
+
         return neighbours.get(rand.nextInt(neighbours.size()));
     }
 }
