@@ -1,9 +1,14 @@
+/**
+ * Objektorienterad programmeringsmetodik obligatorisk uppgift 3
+ * Grupp 2
+ * id15vjn
+ * ens11jye
+ * id15jnn
+ * dv15nkn
+ */
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Created by konig on 2016-08-23.
- */
 public class EnvironmentTest {
 
     @Test
