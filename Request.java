@@ -16,14 +16,14 @@ import java.util.Stack;
 
 public class Request extends Messenger {
 
-    private Stack<Node> wayBack = new Stack();
-    private Node startNode;
+    protected Stack<Node> wayBack = new Stack();
+    protected Node startNode;
     private int event;
-    private boolean found = false;
+    protected boolean found = false;
     private Node targetNode;
-    private boolean hasReturned = false;
+    private boolean retry = true;
     private int stepsToGoal;
-    private int timeoutCounter;
+    protected int timeoutCounter;
 
     /**
      * Constructor for Request.
@@ -78,38 +78,47 @@ public class Request extends Messenger {
      */
     public void move(){
         timeoutCounter--;
-        if(timeoutCounter <= 0 && !hasReturned){
-            hasReturned=true;
+        //if the request timeout counter is done try again one more time
+        if(timeoutCounter <= 0 && retry){
+            retry =false;
             maxsteps=45;
             wayBack.clear();
             wayBack.push(startNode);
+            currentNode = startNode;
         }
-        //if the request has returned after either found the event or ran out
-        //of steps...
-        if(found || maxsteps <= 0) {
+
+        //if the request has found the event...
+        if(found) {
+            //...and has reached the start
             if (wayBack.isEmpty()) {
                 //Do the dumpinfomethod and ignore the rest of move
                 dumpInfo();
                 return;
             }
+            //...or is on its way back
             else{
+                //backtrack
                 nodesToVisit = wayBack.peek();
             }
-        }
+        //Or if it has run out of moves...
+        }else if(maxsteps <= 0) {
+
+            //clear visiting information and return
+            currentNode.visiting = false;
+            return;
 
         //Or if it has found no information about its event in its node...
-        else if (currentNode.routTable.get(event)==null){
+        }else if (currentNode.routTable.get(event)==null){
 
             //Continue with random neighbour
             Node n = currentNode.randomNeighbour();
             nodesToVisit = n;
-        }
-        //Or if informaion about its event is found...
-        else {
+        //Or if information about its event is found...
+        }else{
+
             //...choose the correct node from the table and add to nodesToVisit.
             nodesToVisit = currentNode.routTable.get(event).node;
         }
-
         //If the node in nodesToVisit is not visided already...
         if(!nodesToVisit.visiting){
             //make the move by changing the nodevalues.
