@@ -135,6 +135,8 @@ public class Agent extends Messenger {
                     waiting = true;
                 }
             }
+        }else{
+            currentNode.visiting = false;
         }
     }
 }
