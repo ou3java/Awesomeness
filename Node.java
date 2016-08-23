@@ -22,7 +22,7 @@ public class Node {
     protected ArrayList<Node> neighbours = new ArrayList();
     protected HashMap<Integer, Route> routTable = new HashMap<>();
     public boolean visiting=false;
-    private int chanceToSend = 50;
+    protected int chanceToSend = 50;
     private Random rand = new Random();
 
     /**
